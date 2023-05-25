@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\UserController;
+use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
 use function Ramsey\Uuid\v1;
@@ -19,6 +22,14 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get("/admin", function (){
-    return view('admin.home');
+Route::prefix("/admin")->group(function () {
+    Route::resource('/users', UserController::class)
+        ->only(['index', 'create', 'show', 'edit']);
+    Route::resource('/products', ProductController::class)
+        ->only(['index', 'create', 'show', 'edit']);
+});
+
+Route::get("/test/{id}", function ($id) {
+    return User::take(5)->orderBy('created_at', 'DESC')->get();
+    return User::find($id)->update(['name' => 'Pham Toan Phuc']);
 });

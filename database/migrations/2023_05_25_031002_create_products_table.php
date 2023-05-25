@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('images');
             $table->unsignedBigInteger('category_id');
             $table->timestamps();
+            $table->softDeletes();
             $table->foreign('category_id')
                 ->references('id')
                 ->on('categories')
